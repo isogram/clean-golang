@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "5cc4305e-ede8-4d6b-ac39-d70e3e399fa9",
+		"name": "User Service",
+		"description": "Collection of User Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7d7d24b6-e76a-4788-99e0-032b30c6da70",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"if (jsonData.data) {",
+							"    pm.environment.set(\"USER_TOKEN\", jsonData.data.access_token);",
+							"    pm.environment.set(\"REFRESH_TOKEN\", jsonData.data.refresh_token);   ",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"rohmadi@bhinneka.com\",\n\t\"password\": \"pass123\"\n}"
+				},
+				"url": {
+					"raw": "{{URL}}/v1/user/login",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"v1",
+						"user",
+						"login"
+					]
+				},
+				"description": "# Available Parameters (JSON)\n- email\n- password"
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fullname\": \"Fajrin Imam\",\n    \"username\": \"fajrin\",\n    \"password\": \"pass123\",\n    \"email\": \"fajrin.imam@gmail.com\"\n}"
+				},
+				"url": {
+					"raw": "{{URL}}/v1/user/register",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"v1",
+						"user",
+						"register"
+					]
+				},
+				"description": "# Available Parameters (JSON)\n- fullname\n- username\n- passowrd\n- email"
+			},
+			"response": []
+		},
+		{
+			"name": "Me (Detail logged user profile)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{USER_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{URL}}/v1/user/me",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"v1",
+						"user",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7f52e43b-31f0-4ff9-845d-d17078878923",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"if (jsonData.data) {",
+							"    pm.environment.set(\"USER_TOKEN\", jsonData.data.access_token);",
+							"    pm.environment.set(\"REFRESH_TOKEN\", jsonData.data.refresh_token);   ",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{USER_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"refresh_token\" : \"{{REFRESH_TOKEN}}\"\n}"
+				},
+				"url": {
+					"raw": "{{URL}}/v1/user/refresh_token",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"v1",
+						"user",
+						"refresh_token"
+					]
+				},
+				"description": "# Available Parameters (JSON)\n- refresh_token"
+			},
+			"response": []
+		}
+	]
+}
